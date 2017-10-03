@@ -30,7 +30,7 @@ int main() {
 		window.clear(Color::White);
 		
 		window.draw(grid);
-		
+
 		// End the frame
 		window.display();
 		
