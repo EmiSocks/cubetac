@@ -6,18 +6,15 @@ using namespace sf;
 class Grid : public Drawable, public Transformable {
 private:
 	int cells[4][4] = {
-		{0, 0, 0, 0},
-		{0, 0, 0, 0},
-		{0, 0, 0, 0},
+		{1, 0, 0, 0},
+		{1, 0, 0, 0},
+		{1, 0, 0, 0},
 		{0, 0, 0, 0}
 	};
 	float cellWidth = 35;
 	float cellHeight = 35;
 	float lineThickness = 2;
 	Color lineColor = Color::Black;
-	
-	int getCell(int i, int j) const { return cells[i][j]; }
-	void setCell(int i, int j, int val) { cells[i][j] = val; }
 	
 public:	
 	virtual void draw(RenderTarget& target, RenderStates states) const {
@@ -84,6 +81,9 @@ public:
 			i = j = -1;
 		}
 	}
+	
+	int getCell(int i, int j) const { return cells[i][j]; }
+	void setCell(int i, int j, int val) { cells[i][j] = val; }
 	
 	int getCellByCoord(Vector2f coord) {
 		int i, j;

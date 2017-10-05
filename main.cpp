@@ -12,10 +12,8 @@ int main() {
 	// Set the window's framerate to the monitor's refresh rate
 	window.setVerticalSyncEnabled(true);
 	
-	//Grid grid;
 	Board board;
-	
-	//grid.setPosition(100, 100);
+	int (*line)[4][3];
 	
 	// Main loop
 	while (window.isOpen()) {
