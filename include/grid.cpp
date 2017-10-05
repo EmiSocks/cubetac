@@ -6,14 +6,14 @@ using namespace sf;
 class Grid : public Drawable, public Transformable {
 private:
 	int cells[4][4] = {
-		{1, 2, 0, 0},
+		{0, 0, 0, 0},
 		{0, 0, 0, 0},
 		{0, 0, 0, 0},
 		{0, 0, 0, 0}
 	};
-	float cellWidth = 50.0;
-	float cellHeight = 50.0;
-	float lineThickness = 4.0;
+	float cellWidth = 35;
+	float cellHeight = 35;
+	float lineThickness = 2;
 	Color lineColor = Color::Black;
 	
 	int getCell(int i, int j) const { return cells[i][j]; }

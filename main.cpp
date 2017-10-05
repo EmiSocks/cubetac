@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
-#include "grid.cpp"
+#include "board.cpp"
+// #include "grid.cpp"
 using namespace sf;
 
 int main() {
@@ -11,9 +12,10 @@ int main() {
 	// Set the window's framerate to the monitor's refresh rate
 	window.setVerticalSyncEnabled(true);
 	
-	Grid grid;
+	//Grid grid;
+	Board board;
 	
-	grid.setPosition(100, 100);
+	//grid.setPosition(100, 100);
 	
 	// Main loop
 	while (window.isOpen()) {
@@ -29,7 +31,7 @@ int main() {
 		// Clear the render window
 		window.clear(Color::White);
 		
-		window.draw(grid);
+		window.draw(board);
 
 		// End the frame
 		window.display();
