@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "SFML/Graphics.hpp"
 using namespace sf;
 
@@ -12,8 +13,11 @@ private:
 	};
 	float cellWidth = 50.0;
 	float cellHeight = 50.0;
-	float lineThickness = 3.0;
+	float lineThickness = 4.0;
 	Color lineColor = Color::Black;
+	
+	int getCell(int i, int j) const { return cells[i][j]; }
+	void setCell(int i, int j, int val) { cells[i][j] = val; }
 	
 public:	
 	virtual void draw(RenderTarget& target, RenderStates states) const {
@@ -62,7 +66,36 @@ public:
 		}
 	}
 	
-	int getCell(int i, int j) const { return cells[i][j];	}
-	void setCell(int i, int j, int val) { cells[i][j] = val; }
+	void getIndicesByCoord(int& i, int& j, Vector2f coord) {
+		// This is a 4 instead of a 5 because the last horizontal and vertical lines are not counted
+		float width = 4*cellWidth + 4*lineThickness;
+		float height = 4*cellHeight + 4*lineThickness;
+		Vector2f relativeCoord = coord - (this->getPosition());
+		// If the coordinates are inside the grid
+		if (relativeCoord.x > 0 && relativeCoord.x < width && relativeCoord.y > 0 && relativeCoord.y < height) {
+			i = floor(relativeCoord.x/cellWidth);
+			j = floor(relativeCoord.y/cellHeight);
+			// If the coordinates are in the border of the cell, set the values to -1
+			if (relativeCoord.x - i*cellWidth <= lineThickness || relativeCoord.y - j*cellHeight <= lineThickness) {
+				i = j = -1;
+			}
+		}
+		else {
+			i = j = -1;
+		}
+	}
+	
+	int getCellByCoord(Vector2f coord) {
+		int i, j;
+		getIndicesByCoord(i, j, coord);
+		if (i != -1 && j != -1) return getCell(i, j);
+		else return -1;
+	}
+	
+	void setCellByCoord(Vector2f coord, int val) {
+		int i, j;
+		getIndicesByCoord(i, j, coord);
+		if (i != -1 && j != -1 && (val == 0 || val == 1 || val == 2)) setCell(i, j, val);
+	}
 	
 };
