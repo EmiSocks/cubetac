@@ -4,6 +4,7 @@
 // Might have miscounted, check later
 #define N_WIN_LINES 76
 using namespace sf;
+using namespace std;
 
 class Board : public Drawable {
 private:
