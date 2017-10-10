@@ -3,6 +3,7 @@
 #define MOVE 0
 using namespace sf;
 using namespace std;
+class Client;
 
 class Server {
 private:
@@ -71,12 +72,7 @@ public:
 		}
 	}
 	
-	void broadcast(Packet packet) {
-		for (n=0; n<2; n++) {
-			if (isOnlineClient[n]) clientSocket[n].send(packet);
-			else clients[n]->receiveOffline(packet);
-		}
-	}
+	void broadcast(Packet packet);
 	
 	int getPlayerTurn() {
 		return playerTurn;

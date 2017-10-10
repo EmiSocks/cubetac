@@ -6,9 +6,9 @@ using namespace sf;
 class Grid : public Drawable, public Transformable {
 private:
 	int cells[4][4] = {
-		{1, 0, 0, 0},
-		{1, 0, 0, 0},
-		{1, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
 		{0, 0, 0, 0}
 	};
 	float cellWidth = 35;

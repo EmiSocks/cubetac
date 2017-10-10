@@ -10,6 +10,13 @@
 using namespace sf;
 using namespace std;
 
+void Server::broadcast(Packet packet) {
+	for (int n=0; n<2; n++) {
+		if (isOnlineClient[n]) clientSocket[n].send(packet);
+		else clients[n]->receiveOffline(packet);
+	}
+}
+
 int gamemode = OFFLINE;
 int player_turn = 0;
 Server* server;
@@ -31,12 +38,14 @@ int main() {
 		client2 = new Client(1, server);
 		server->addClient(0, client1);
 		server->addClient(1, client2);
+		client1->myTurn = true;
 	}
 	else if (gamemode == SERVER) {
 		server = new Server();
 		client1 = new Client(0, server);
 		server->addClient(0, client1);
 		server->addClient(1);
+		client1->myTurn = true;
 	}
 	else if (gamemode == CLIENT) {
 		client2 = new Client(1);
@@ -55,7 +64,7 @@ int main() {
 		
 		// Handle network events
 		if (gamemode == SERVER && !client1->myTurn) {
-			server->receiveOnline();
+			server->receiveOnline(1);
 		}
 		else if (gamemode == CLIENT && !client2->myTurn) {
 			client2->receiveOnline();
@@ -86,8 +95,14 @@ int main() {
 			if (event.type == Event::Closed) {
 				// Free memory
 				if (gamemode == OFFLINE) {
-					server->deleteClient();
 					delete server;
+					delete client1;
+					delete client2;
+				} else if (gamemode == SERVER) {
+					delete server;
+					delete client1;
+				} else if (gamemode == CLIENT) {
+					delete client2;
 				}
 				window.close();
 			}

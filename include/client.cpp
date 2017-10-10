@@ -4,6 +4,7 @@
 #define MOVE 0
 using namespace sf;
 using namespace std;
+class Server;
 
 class Client {
 private:

@@ -144,9 +144,9 @@ public:
 	void getIndicesByCoord(int& i, int& j, int& k, Vector2f coord) {
 		i = j = k = -1;
 		for(int m=0; m<4; m++) {
-			int c = grids[k].getCellByCoord(coord);
+			int c = grids[m].getCellByCoord(coord);
 			if (c != -1) {
-				grids[k].getIndicesByCoord(i, j, coord);
+				grids[m].getIndicesByCoord(i, j, coord);
 				k = m;
 			}
 		}
