@@ -10,6 +10,7 @@
 using namespace sf;
 using namespace std;
 
+// This disaster is because I didn't use header files
 void Server::broadcast(Packet packet) {
 	for (int n=0; n<2; n++) {
 		if (isOnlineClient[n]) clientSocket[n].send(packet);
@@ -17,7 +18,7 @@ void Server::broadcast(Packet packet) {
 	}
 }
 
-int gamemode = OFFLINE;
+int gamemode;
 int player_turn = 0;
 Server* server;
 Client* client1;
@@ -51,8 +52,6 @@ int main() {
 		client2 = new Client(1);
 	}
 	
-	
-	
 	// Create the window
 	RenderWindow window(VideoMode(800,600), "cubetac");
 	
@@ -69,6 +68,21 @@ int main() {
 		else if (gamemode == CLIENT && !client2->myTurn) {
 			client2->receiveOnline();
 		}
+		
+		// Clear the render window
+		window.clear(Color::White);
+		
+		if (gamemode == SERVER || gamemode == OFFLINE) {
+			Board* board = client1->getBoard();
+			window.draw(*board);
+		}
+		else if (gamemode == CLIENT) {
+			Board* board = client2->getBoard();
+			window.draw(*board);
+		}
+
+		// End the frame
+		window.display();
 		
 		// Handle the window's events
 		Event event;
@@ -108,21 +122,6 @@ int main() {
 			}
 			
 		}
-		
-		// Clear the render window
-		window.clear(Color::White);
-		
-		if (gamemode == SERVER || gamemode == OFFLINE) {
-			Board* board = client1->getBoard();
-			window.draw(*board);
-		}
-		else if (gamemode == CLIENT) {
-			Board* board = client2->getBoard();
-			window.draw(*board);
-		}
-
-		// End the frame
-		window.display();
 		
 	}
 	

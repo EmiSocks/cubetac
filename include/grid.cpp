@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cmath>
 #include "SFML/Graphics.hpp"
+#define CELLW 35
+#define CELLH 35
+#define LINET 2
 using namespace sf;
 
 class Grid : public Drawable, public Transformable {
@@ -11,9 +14,9 @@ private:
 		{0, 0, 0, 0},
 		{0, 0, 0, 0}
 	};
-	float cellWidth = 35;
-	float cellHeight = 35;
-	float lineThickness = 2;
+	float cellWidth = CELLW;
+	float cellHeight = CELLH;
+	float lineThickness = LINET;
 	Color lineColor = Color::Black;
 	
 public:	
@@ -43,6 +46,7 @@ public:
 					circle.setPosition(targetPosition);
 					circle.setOutlineColor(lineColor);
 					circle.setOutlineThickness(-lineThickness);
+					circle.setFillColor(Color::Transparent);
 					target.draw(circle, states);
 				}
 				else if (this->getCell(i,j) == 2) {
@@ -63,7 +67,7 @@ public:
 		}
 	}
 	
-	void getIndicesByCoord(int& i, int& j, Vector2f coord) {
+	void getIndicesByCoord(int& i, int& j, Vector2f coord) const {
 		// This is a 4 instead of a 5 because the last horizontal and vertical lines are not counted
 		float width = 4*cellWidth + 4*lineThickness;
 		float height = 4*cellHeight + 4*lineThickness;
@@ -85,7 +89,7 @@ public:
 	int getCell(int i, int j) const { return cells[i][j]; }
 	void setCell(int i, int j, int val) { cells[i][j] = val; }
 	
-	int getCellByCoord(Vector2f coord) {
+	int getCellByCoord(Vector2f coord) const {
 		int i, j;
 		getIndicesByCoord(i, j, coord);
 		if (i != -1 && j != -1) return getCell(i, j);
