@@ -141,6 +141,17 @@ public:
 		}
 	}
 	
+	void getIndicesByCoord(int& i, int& j, int& k, Vector2f coord) {
+		i = j = k = -1;
+		for(int m=0; m<4; m++) {
+			int c = grids[k].getCellByCoord(coord);
+			if (c != -1) {
+				grids[k].getIndicesByCoord(i, j, coord);
+				k = m;
+			}
+		}
+	}
+	
 	// Returns 0 for no win, 1 for win for circles and 2 for win for crosses
 	int hasWinLine(int (*retLine)[4][3]) {
 		for (int n=0; n<N_WIN_LINES; n++) {
