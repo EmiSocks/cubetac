@@ -19,10 +19,11 @@ void Server::broadcast(Packet packet) {
 }
 
 int gamemode;
-int player_turn = 0;
+int playerTurn = 0;
 Server* server;
 Client* client1;
 Client* client2;
+int playerWin;
 
 int main() {
 	
@@ -75,10 +76,12 @@ int main() {
 		if (gamemode == SERVER || gamemode == OFFLINE) {
 			Board* board = client1->getBoard();
 			window.draw(*board);
+			playerWin = board->playerWin();
 		}
 		else if (gamemode == CLIENT) {
 			Board* board = client2->getBoard();
 			window.draw(*board);
+			playerWin = board->playerWin();
 		}
 
 		// End the frame
@@ -92,15 +95,18 @@ int main() {
 			if (event.type == Event::MouseButtonPressed) {
 				// If the left mouse button is pressed
 				if (event.mouseButton.button == Mouse::Left) {
-					if (gamemode == SERVER && client1->myTurn) {
-						client1->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
-					}
-					else if (gamemode == CLIENT && client2->myTurn) {
-						client2->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
-					}
-					else if (gamemode == OFFLINE) {
-						if (client1->myTurn) client1->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
-						else if (client2->myTurn) client2->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
+					// If no player has won yet
+					if (playerWin == 0) {
+						if (gamemode == SERVER && client1->myTurn) {
+							client1->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						}
+						else if (gamemode == CLIENT && client2->myTurn) {
+							client2->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						}
+						else if (gamemode == OFFLINE) {
+							if (client1->myTurn) client1->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
+							else if (client2->myTurn) client2->onMouseClick(Vector2f(event.mouseButton.x, event.mouseButton.y));
+						}
 					}
 				}
 			}
