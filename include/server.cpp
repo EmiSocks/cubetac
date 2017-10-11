@@ -32,7 +32,7 @@ public:
 	
 	addClient(int playerNumber, Client* client) {
 		clients[playerNumber] = client;
-		cout << "Offline connection established." << endl;
+		//cout << "Offline connection established." << endl;
 		isOnlineClient[playerNumber] = false;
 	}
 	

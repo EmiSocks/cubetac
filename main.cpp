@@ -120,7 +120,14 @@ int main() {
 			playerWin = board->playerWin();
 		}
 		
-		playerTurnText.setString("Player "+to_string(playerTurn)+"'s turn");
+		if (playerWin == 0) playerTurnText.setString("Player "+to_string(playerTurn)+"'s turn");
+		else playerTurnText.setString("Player "+to_string(playerWin)+" wins!");
+		// Center the text
+		{
+			int w = playerTurnText.getCharacterSize();
+			int l = playerTurnText.getString().getSize();
+			playerTurnText.setPosition((WINDOWW/2) - (w*l/4), 2*WINDOWH/3);
+		}
 		window.draw(playerTurnText);
 
 		// End the frame

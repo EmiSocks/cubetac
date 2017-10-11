@@ -35,7 +35,7 @@ public:
 		onlineMode = false;
 		playerNumber = playerN;
 		server = ref;
-		cout << "Offline connection established." << endl;
+		//cout << "Offline connection established." << endl;
 	}
 	
 	// Returns a reference to the board (to be drawn)
@@ -76,7 +76,6 @@ public:
 	}
 	
 	void alterBoard(Packet packet) {
-		cout << "Board altered" << endl;
 		Int8 action;
 		packet >> action;
 		if (action == MOVE) {
