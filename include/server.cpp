@@ -25,6 +25,7 @@ public:
 	addClient(int playerNumber) {
 		cout << "Awaiting connection on port " << port << "..." << endl;
 		listener.accept(clientSocket[playerNumber]);
+		clientSocket[playerNumber].setBlocking(false);
 		cout << "Connection established." << endl;
 		isOnlineClient[playerNumber] = true;
 	}
@@ -44,10 +45,11 @@ public:
 	
 	void receiveOnline(int playerNumber) {
 		Packet packet;
-		clientSocket[playerNumber].receive(packet);
-		if (playerNumber == playerTurn) {
-			alterBoard(playerNumber, packet);
-			nextPlayerTurn();
+		if (clientSocket[playerNumber].receive(packet) == Socket::Done) {
+			if (playerNumber == playerTurn) {
+				alterBoard(playerNumber, packet);
+				nextPlayerTurn();
+			}
 		}
 	}
 	

@@ -26,6 +26,7 @@ public:
 		cout << "Enter IP address to connect to server: " << endl;
 		cin >> ipAddress;
 		socket.connect(ipAddress, port);
+		socket.setBlocking(false);
 		cout << "Connection established." << endl;
 	}
 	
@@ -69,11 +70,13 @@ public:
 	
 	void receiveOnline() {
 		Packet packet;
-		socket.receive(packet);
-		alterBoard(packet);
+		if (socket.receive(packet) == Socket::Done) {
+			alterBoard(packet);
+		}
 	}
 	
 	void alterBoard(Packet packet) {
+		cout << "Board altered" << endl;
 		Int8 action;
 		packet >> action;
 		if (action == MOVE) {

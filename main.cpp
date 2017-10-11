@@ -1,9 +1,12 @@
 #include <iostream>
+#include <string>
 #include "SFML/Graphics.hpp"
 #include "board.cpp"
 #include "server.cpp"
 #include "client.cpp"
 // #include "grid.cpp"
+#define WINDOWW 800
+#define WINDOWH 600
 #define OFFLINE 0
 #define SERVER 1
 #define CLIENT 2
@@ -24,6 +27,8 @@ Server* server;
 Client* client1;
 Client* client2;
 int playerWin;
+Text playerNText;
+Text playerTurnText;
 
 int main() {
 	
@@ -33,6 +38,20 @@ int main() {
 	cout << "Enter gamemode (0=OFFLINE, 1=SERVER, 2=CLIENT): " << endl;
 	cin >> gamemode;
 	
+	// Initialize text
+	Font font;
+	font.loadFromFile("resources/fonts/arial.ttf");
+	
+	playerNText.setFont(font);
+	playerNText.setFillColor(Color::Black);
+	playerNText.setCharacterSize(20);
+	playerNText.setPosition(Vector2f(50, 50));
+	
+	playerTurnText.setFont(font);
+	playerTurnText.setFillColor(Color::Black);
+	playerTurnText.setCharacterSize(20);
+	playerTurnText.setPosition(Vector2f(WINDOWW/2, 2*WINDOWH/3));
+	
 	// Initialize server and client
 	if (gamemode == OFFLINE) {
 		server = new Server();
@@ -41,6 +60,7 @@ int main() {
 		server->addClient(0, client1);
 		server->addClient(1, client2);
 		client1->myTurn = true;
+		client2->myTurn = false;
 	}
 	else if (gamemode == SERVER) {
 		server = new Server();
@@ -48,13 +68,16 @@ int main() {
 		server->addClient(0, client1);
 		server->addClient(1);
 		client1->myTurn = true;
+		playerNText.setString("Player 1");
 	}
 	else if (gamemode == CLIENT) {
 		client2 = new Client(1);
+		client2->myTurn = false;
+		playerNText.setString("Player 2");
 	}
 	
 	// Create the window
-	RenderWindow window(VideoMode(800,600), "cubetac");
+	RenderWindow window(VideoMode(WINDOWW, WINDOWH), "cubetac");
 	
 	// Set the window's framerate to the monitor's refresh rate
 	window.setVerticalSyncEnabled(true);
@@ -73,16 +96,32 @@ int main() {
 		// Clear the render window
 		window.clear(Color::White);
 		
-		if (gamemode == SERVER || gamemode == OFFLINE) {
+		if (gamemode == OFFLINE) {
 			Board* board = client1->getBoard();
 			window.draw(*board);
+			if (client1->myTurn) playerTurn = 1;
+			else playerTurn = 2;
+			playerWin = board->playerWin();
+		}
+		if (gamemode == SERVER || gamemode == OFFLINE) {
+			window.draw(playerNText);
+			Board* board = client1->getBoard();
+			window.draw(*board);
+			if (client1->myTurn) playerTurn = 1;
+			else playerTurn = 2;
 			playerWin = board->playerWin();
 		}
 		else if (gamemode == CLIENT) {
+			window.draw(playerNText);
 			Board* board = client2->getBoard();
 			window.draw(*board);
+			if (client2->myTurn) playerTurn = 2;
+			else playerTurn = 1;
 			playerWin = board->playerWin();
 		}
+		
+		playerTurnText.setString("Player "+to_string(playerTurn)+"'s turn");
+		window.draw(playerTurnText);
 
 		// End the frame
 		window.display();
