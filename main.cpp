@@ -40,7 +40,7 @@ int main() {
 	
 	// Initialize text
 	Font font;
-	font.loadFromFile("resources/fonts/arial.ttf");
+	font.loadFromFile("C:/Windows/Fonts/arial.ttf");
 	
 	playerNText.setFont(font);
 	playerNText.setFillColor(Color::Black);
